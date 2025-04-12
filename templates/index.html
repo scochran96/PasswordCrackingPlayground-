@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Password Cracking Playground</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1c1c1c;
+            color: white;
+            padding: 2rem;
+        }
+
+        h1 {
+            margin-bottom: 2rem;
+        }
+
+        .box {
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 4px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #00bcd4;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0097a7;
+        }
+
+        .danger {
+            background-color: red;
+        }
+
+        pre {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛡️ Password Cracking Playground</h1>
+
+    <!-- 🔐 Hash a Password -->
+    <div class="box">
+        <h2>🔐 Hash a Password</h2>
+        <form method="POST" action="/hash">
+            <input type="text" name="password" placeholder="Enter password">
+            <button type="submit">Hash It</button>
+        </form>
+        {% if sha256 %}
+            <p><strong>SHA-256:</strong> {{ sha256 }}</p>
+            <p><strong>bcrypt:</strong> {{ bcrypt_hash }}</p>
+        {% endif %}
+    </div>
+
+    <!-- 🧪 Dictionary Crack -->
+    <div class="box">
+        <h2>🧪 Crack a SHA-256 Hash (Dictionary)</h2>
+        <form method="POST" action="/crack">
+            <input type="text" name="sha256_hash" placeholder="Enter SHA-256 hash">
+            <button type="submit">Crack It</button>
+        </form>
+        {% if cracked_password %}
+            <p><strong>✅ Password found:</strong> {{ cracked_password }}</p>
+        {% elif input_hash %}
+            <p><strong>❌ No match found for hash:</strong> {{ input_hash }}</p>
+        {% endif %}
+    </div>
+
+    <!-- 💣 Brute Force Crack -->
+    <div class="box">
+        <h2>💣 Brute Force a SHA-256 Hash</h2>
+        <form method="POST" action="/brute">
+            <input type="text" name="brute_hash" placeholder="Enter SHA-256 hash">
+            <button type="submit">Brute Force It</button>
+        </form>
+        {% if brute_result %}
+            <p><strong>✅ Cracked by brute force:</strong> {{ brute_result }}</p>
+            <p><strong>🔢 Total guesses:</strong> {{ brute_guesses }}</p>
+            <p><strong>⏱️ Time taken:</strong> {{ brute_time }} seconds</p>
+        {% elif brute_input %}
+            <p><strong>❌ No match found for hash:</strong> {{ brute_input }}</p>
+            <p><strong>🔢 Total guesses attempted:</strong> {{ brute_guesses }}</p>
+            <p><strong>⏱️ Time taken:</strong> {{ brute_time }} seconds</p>
+        {% endif %}
+    </div>
+
+    <!-- 📜 Log Viewer with Clear Button -->
+    <div class="box">
+        <h2>📜 Recent Crack Log</h2>
+        <form method="POST" action="/clear_log">
+            <button type="submit" class="danger">🧹 Clear Log</button>
+        </form>
+        <pre>
+{% for line in logs %}
+{{ line.strip() }}
+{% endfor %}
+        </pre>
+    </div>
+</body>
+</html>
