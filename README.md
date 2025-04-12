@@ -30,6 +30,7 @@ A web-based cybersecurity tool that simulates real-world password cracking techn
 
 ---
 
+
 ## 🚀 How to Run Locally
 
 1. **Clone this repo**
@@ -37,3 +38,7 @@ A web-based cybersecurity tool that simulates real-world password cracking techn
 ```bash
 git clone https://github.com/scochran96/PasswordCrackingPlayground.git
 cd PasswordCrackingPlayground
+
+2. pip install -r requirements.txt
+
+3. python app.py
